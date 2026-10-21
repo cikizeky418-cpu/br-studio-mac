@@ -503,7 +503,8 @@ class App:
             for w in (e_j, e_h):
                 w.bind('<KeyRelease>', lambda e: calc())
             cb.bind('<<ComboboxSelected>>', lambda e: calc())
-            calc()
+            # JANGAN panggil calc() di sini: lbl_total/lbl_sisa/e_dp belum dibuat
+            # saat add_item() dipanggil pertama kali (form build) -> NameError.
 
         def calc():
             total = 0
@@ -536,6 +537,7 @@ class App:
         lbl_sisa.pack(side='left', padx=8)
         e_dp = self.entry_row(body, 'DP Dibayar (Rp)', r.get('dpDibayar', 0) or 0)
         e_dp.bind('<KeyRelease>', lambda e: calc())
+        calc()  # hitung awal setelah semua widget (lbl_total/lbl_sisa/e_dp) ada
 
         def save():
             nama = e_nama.get().strip()
